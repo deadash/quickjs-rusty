@@ -21,9 +21,6 @@ fn main() {
     #[cfg(not(feature = "bindgen"))]
     panic!("Invalid configuration for libquickjs-sys: Must either enable the bundled or the bindgen feature");
 
-    #[cfg(feature = "patched")]
-    panic!("Invalid configuration for libquickjs-sys: the patched feature is incompatible with the system feature");
-
     let lib: std::borrow::Cow<str> = if let Ok(lib) = env::var("QUICKJS_LIBRARY_PATH") {
         lib.into()
     } else if cfg!(unix) {
@@ -63,9 +60,6 @@ fn main() {
     }
     copy_dir::copy_dir(embed_path.join("quickjs"), &code_dir)
         .expect("Could not copy quickjs directory");
-
-    #[cfg(feature = "patched")]
-    apply_patches(&code_dir);
 
     std::fs::copy(
         embed_path.join("static-functions.c"),
@@ -126,30 +120,4 @@ fn main() {
 
     std::fs::copy(embed_path.join("bindings.rs"), out_path.join("bindings.rs"))
         .expect("Could not copy bindings.rs");
-}
-
-#[cfg(feature = "patched")]
-fn apply_patches(code_dir: &PathBuf) {
-    use std::fs;
-
-    eprintln!("Applying patches...");
-    let embed_path = PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap()).join("embed");
-    let patches_path = embed_path.join("patches");
-    for patch in fs::read_dir(patches_path).expect("Could not open patches directory") {
-        let patch = patch.expect("Could not open patch");
-        eprintln!("Applying {:?}...", patch.file_name());
-        let status = std::process::Command::new("patch")
-            .current_dir(&code_dir)
-            .arg("-i")
-            .arg(patch.path())
-            .arg("--binary")
-            .spawn()
-            .expect("Could not apply patches")
-            .wait()
-            .expect("Could not apply patches");
-        assert!(
-            status.success(),
-            "Patch command returned non-zero exit code"
-        );
-    }
 }

@@ -11,18 +11,17 @@ repository = "https://github.com/Icemic/quickjs-rusty"
 version = "0.6.3"
 
 [package.metadata.docs.rs]
-features = ["chrono", "bigint", "log"]
+features = ["chrono", "log"]
 
 [features]
-bigint = ["num-bigint", "num-traits", "libquickjs-ng-sys/patched"]
+bigint = ["num-bigint", "num-traits"]
 default = ["chrono", "serde", "bigint"]
-patched = ["libquickjs-ng-sys/patched"]
 serde = ["thiserror", "dep:serde"]
 
 [dependencies]
 anyhow = {version = "1"}
 chrono = {version = "0.4.7", optional = true}
-libquickjs-ng-sys = {version = "0.6.1", path = "./libquickjs-sys"}
+libquickjs-ng-sys = {version = "0.6.1", path = "./libquickjs-sys", features = ["bundled"]}
 log = {version = "0.4.8", optional = true}
 num-bigint = {version = "0.4.4", optional = true}
 num-traits = {version = "0.2.0", optional = true}
