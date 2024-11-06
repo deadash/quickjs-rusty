@@ -1,3 +1,5 @@
 [submodule "libquickjs-sys/embed/quickjs"]
 	path = libquickjs-sys/embed/quickjs
 	url = https://github.com/deadash/quickjs.git
+	rev = ea8add02360e142eb98505725caff94d4653694a
+
