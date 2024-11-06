@@ -802,6 +802,20 @@ JS_EXTERN JSValue JS_NewPromiseCapability(JSContext *ctx, JSValue *resolving_fun
 JS_EXTERN JSPromiseStateEnum JS_PromiseState(JSContext *ctx, JSValue promise);
 JS_EXTERN JSValue JS_PromiseResult(JSContext *ctx, JSValue promise);
 
+JS_EXTERN JSValue JS_PromiseResolve(JSContext *ctx, JSValue value);
+JS_EXTERN JSValue JS_PromiseReject(JSContext *ctx, JSValue value);
+JS_EXTERN JSValue JS_PromiseAll(JSContext *ctx, JSValue iterable);
+JS_EXTERN JSValue JS_PromiseAllSettled(JSContext *ctx, JSValue iterable);
+JS_EXTERN JSValue JS_PromiseAny(JSContext *ctx, JSValue iterable);
+JS_EXTERN JSValue JS_PromiseRace(JSContext *ctx, JSValue iterable);
+JS_EXTERN JSValue JS_PromiseWithResolvers(JSContext *ctx);
+
+JS_EXTERN JSValue JS_PromiseThen(JSContext *ctx, JSValue promise, JSValue on_fulfilled_func);
+JS_EXTERN JSValue JS_PromiseThen2(JSContext *ctx, JSValue promise, JSValue on_fulfilled_func, JSValue on_reject_func);
+JS_EXTERN JSValue JS_PromiseCatch(JSContext *ctx, JSValue promise, JSValue on_reject_func);
+JS_EXTERN JSValue JS_PromiseFinally(JSContext *ctx, JSValue promise, JSValue on_finally_func);
+
+
 JS_EXTERN JSValue JS_NewSymbol(JSContext *ctx, const char *description, JS_BOOL is_global);
 
 /* is_handled = TRUE means that the rejection is handled */

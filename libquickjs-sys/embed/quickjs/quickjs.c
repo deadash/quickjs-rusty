@@ -48893,6 +48893,64 @@ static JSValue js_promise_finally(JSContext *ctx, JSValue this_val,
     return ret;
 }
 
+JSValue JS_PromiseResolve(JSContext *ctx, JSValue value) {
+    return js_promise_resolve(ctx, ctx->promise_ctor, 1, &value, 0);
+}
+
+JSValue JS_PromiseReject(JSContext *ctx, JSValue value) {
+    return js_promise_resolve(ctx, ctx->promise_ctor, 1, &value, 1);
+}
+
+JSValue JS_PromiseAll(JSContext *ctx, JSValue iterable)
+{
+    return js_promise_all(ctx, ctx->promise_ctor, 1, &iterable, PROMISE_MAGIC_all);
+}
+
+JSValue JS_PromiseAllSettled(JSContext *ctx, JSValue iterable)
+{
+    return js_promise_all(ctx, ctx->promise_ctor, 1, &iterable, PROMISE_MAGIC_allSettled);
+}
+
+JSValue JS_PromiseAny(JSContext *ctx, JSValue iterable)
+{
+    return js_promise_all(ctx, ctx->promise_ctor, 1, &iterable, PROMISE_MAGIC_any);
+}
+
+JSValue JS_PromiseRace(JSContext *ctx, JSValue iterable)
+{
+    return js_promise_race(ctx, ctx->promise_ctor, 1, &iterable);
+}
+
+JSValue JS_PromiseWithResolvers(JSContext *ctx)
+{
+    return js_promise_withResolvers(ctx, ctx->promise_ctor, 0, NULL);
+}
+
+JSValue JS_PromiseThen(JSContext *ctx, JSValue promise, JSValue on_fulfilled_func)
+{
+    JSValue argv[1] = { on_fulfilled_func };
+    return js_promise_then(ctx, promise, 1, &argv);
+}
+
+JSValue JS_PromiseThen2(JSContext *ctx, JSValue promise, JSValue on_fulfilled_func, JSValue on_reject_func)
+{
+    JSValue argv[2] = { on_fulfilled_func, on_reject_func };
+    return js_promise_then(ctx, promise, 2, &argv);
+}
+
+JSValue JS_PromiseCatch(JSContext *ctx, JSValue promise, JSValue on_reject_func)
+{
+    JSValue argv[1] = { on_reject_func };
+    return js_promise_catch(ctx, promise, 1, &argv);
+}
+
+JSValue JS_PromiseFinally(JSContext *ctx, JSValue promise, JSValue on_finally_func)
+{
+    JSValue argv[1] = { on_finally_func };
+    return js_promise_finally(ctx, promise, 1, &argv);
+}
+
+
 static const JSCFunctionListEntry js_promise_funcs[] = {
     JS_CFUNC_MAGIC_DEF("resolve", 1, js_promise_resolve, 0 ),
     JS_CFUNC_MAGIC_DEF("reject", 1, js_promise_resolve, 1 ),
