@@ -1,3 +1,3 @@
 [submodule "libquickjs-sys/embed/quickjs"]
 	path = libquickjs-sys/embed/quickjs
-	url = https://github.com/quickjs-ng/quickjs.git
+	url = https://github.com/deadash/quickjs.git
